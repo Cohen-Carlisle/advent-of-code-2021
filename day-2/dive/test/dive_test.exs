@@ -8,6 +8,6 @@ defmodule DiveTest do
       |> Dive.parse_input()
       |> Dive.perform()
 
-    assert output == 1_694_130
+    assert output == 1_698_850_445
   end
 end
