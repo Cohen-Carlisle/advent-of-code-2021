@@ -22,5 +22,9 @@ defmodule SonarSweepTest do
 
       assert SonarSweep.count_increases(measurements, 3) == 1858
     end
+
+    test "returns 0 for an empty list" do
+      assert SonarSweep.count_increases([]) == 0
+    end
   end
 end
