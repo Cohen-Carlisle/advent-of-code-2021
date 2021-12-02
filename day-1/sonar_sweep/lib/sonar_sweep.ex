@@ -21,23 +21,18 @@ defmodule SonarSweep do
   """
   def count_increases(depths, window \\ 1) do
     depths
-    |> Enum.reduce([count: 0, previous: [], window: window], &do_count_increases/2)
-    |> Keyword.fetch!(:count)
+    |> Enum.chunk_every(window + 1, 1, :discard)
+    |> Enum.reduce(0, &do_count_increases/2)
   end
 
-  defp do_count_increases(current, [count: 0, previous: previous, window: window]) when length(previous) < window do
-    [count: 0, previous: [current | previous], window: window]
-  end
-
-  defp do_count_increases(current, [count: count, previous: previous, window: window]) do
-    new_previous = [current | Enum.slice(previous, 0..-2)]
-    previous_sum = Enum.sum(previous)
-    current_sum = Enum.sum(new_previous)
+  defp do_count_increases(window, count) do
+    previous_sum = window |> Enum.slice(0..-2) |> Enum.sum()
+    current_sum = window |> Enum.slice(1..-1) |> Enum.sum()
 
     if current_sum > previous_sum do
-      [count: count + 1, previous: new_previous, window: window]
+      count + 1
     else
-      [count: count, previous: new_previous, window: window]
+      count
     end
   end
 end
