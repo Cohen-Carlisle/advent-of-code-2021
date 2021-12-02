@@ -22,17 +22,6 @@ defmodule SonarSweep do
   def count_increases(depths, window \\ 1) do
     depths
     |> Enum.chunk_every(window + 1, 1, :discard)
-    |> Enum.reduce(0, &do_count_increases/2)
-  end
-
-  defp do_count_increases(window, count) do
-    previous_sum = window |> Enum.slice(0..-2) |> Enum.sum()
-    current_sum = window |> Enum.slice(1..-1) |> Enum.sum()
-
-    if current_sum > previous_sum do
-      count + 1
-    else
-      count
-    end
+    |> Enum.count(&(List.last(&1) > List.first(&1)))
   end
 end
